@@ -4,7 +4,10 @@ on:
   push:
     branches:
       - main
-  
+
+env:
+    VERSION:$(( $(cat version.txt) + 1 ))
+
 jobs:
   
   build_push_supermario_docker_image:
@@ -19,5 +22,5 @@ jobs:
  
       - name: Build and Push Docker Image
         run: |
-          docker build -t docker.io/floydsan/supermario-gitops:1 .
-          docker push docker.io/floydsan/supermario-gitops:1
+          docker build -t docker.io/floydsan/supermario-gitops:${{ env.VERSION }} .
+          docker push docker.io/floydsan/supermario-gitops:${{ env.VERSION }}
