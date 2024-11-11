@@ -9,6 +9,7 @@ env:
   VERSION: $(( $(cat version.txt) + 1 ))
   
 jobs:
+  
   run_container_image_scan_on_supermario_docker_image:
     runs-on: ubuntu-latest	
  
@@ -22,13 +23,11 @@ jobs:
       - name: Get Docker Image from Docker Hub
         run: |
           docker pull docker.io/floydsan/supermario-gitops:${{ env.VERSION }}
-          docker save -o supermario-gitops.tar docker.io/floydsan/supermario-gitops:${{ env.VERSION }}
-          echo ${PWD}
-          ls -la /github/workspace/
+          docker save -o supermariolatestdockerimage.tar docker.io/floydsan/supermario-gitops:${{ env.VERSION }}
      
       - name: Run Trivy vulnerability scanner in tarball mode
         uses: aquasecurity/trivy-action@master
         with:
-          input: /github/workspace/supermario-gitops.tar
+          input: /github/workspace/supermariolatestdockerimage.tar
           exit-code: '1'
           severity: 'CRITICAL,HIGH'
